@@ -6,13 +6,13 @@
 
 ✅ Login/ create account - Users can register and login 
 
-[![50_emoj](https://cdn3.emoji.gg/emojis/50_emoj.png)](https://emoji.gg/emoji/50_emoj) Users can post new graffiti with location and detailed description
+⏳ Users can post new graffiti with location and detailed description
 
 ❌ Users can update and delete information on one graffiti post.
 
 ✅ Users can browse all the graffiti posts other users uploaded.
 
-[![50_emoj](https://cdn3.emoji.gg/emojis/50_emoj.png)](https://emoji.gg/emoji/50_emoj) Users can browse all the graffiti posts they uploaded.
+⏳ Users can browse all the graffiti posts they uploaded.
 
 **User Stories:**
 
