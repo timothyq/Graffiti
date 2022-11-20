@@ -7,15 +7,18 @@ const router = express.Router();
 router.get("/", usersControllers.getUsers);
 
 router.post(
-    "/signup",
-    [
-        check("name").not().isEmpty(),
-        check("email").normalizeEmail().isEmail(),
-        check("password").isLength({ min: 6 }),
-    ],
-    usersControllers.signup
+  "/signup",
+  [
+    check("name").not().isEmpty(),
+    check("email").normalizeEmail().isEmail(),
+    check("password").isLength({ min: 6 }),
+  ],
+  usersControllers.signup
 );
 
 router.post("/login", usersControllers.login);
+
+// define an API to handle request(access to database's image))
+router.post("/places", usersControllers.getPlaces);
 
 module.exports = router;

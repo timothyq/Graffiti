@@ -17,6 +17,7 @@ import Users from "./user/pages/User";
 
 const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     //useCallback is a react's hook
     const login = useCallback(() => {
         setIsLoggedIn(true);

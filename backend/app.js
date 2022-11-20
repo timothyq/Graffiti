@@ -9,7 +9,8 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5501");
+  //only allow request from http://localhost:3001,which is frontend server
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3001");
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"

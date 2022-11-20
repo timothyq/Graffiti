@@ -6,7 +6,7 @@ import Modal from "../../shared/components/UIElements/Modal";
 import { AuthContext } from "../../shared/context/auth-context";
 
 import "./PlaceItem.css";
-
+//define PlaceItem component
 const PlaceItem = (props) => {
     const auth = useContext(AuthContext);
     const [showMap, setShowMap] = useState(false);

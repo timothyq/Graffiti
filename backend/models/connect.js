@@ -7,7 +7,7 @@ const HttpError = require("./http-error");
 // basic information about mongoDB
 const url =
   "mongodb+srv://lingyi:zly123456@cluster1.mkkgg71.mongodb.net/?retryWrites=true&w=majority;";
-const dbName = "StreetArt";
+const dbName = "Places";
 
 // connect to MongoDB accoring to provided database name
 async function connectDB() {

@@ -131,6 +131,26 @@ const login = async (req, res, next) => {
   }
 };
 
+// access image: define callback func. So the handler in router can use it.
+const getPlaces = async (req, res, next) => {
+  console.log("get places");
+  //Backend connect to MongoDB
+  let result;
+  try {
+    //req.body is a object
+    const { email } = req.body;
+    const PlaceImage = req.app.locals.database.collection("PlaceImage");
+    result = await PlaceImage.find({ creator: email }).toArray();
+    res.status(200).json({ places: result });
+  } catch (error) {
+    console.log(error);
+    return next(
+      new HttpError("Fetching places failed, please try again later!", 500)
+    );
+  }
+};
+
+exports.getPlaces = getPlaces;
 exports.getUsers = getUsers;
 exports.signup = signup;
 exports.login = login;
