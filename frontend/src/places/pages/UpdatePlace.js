@@ -105,32 +105,34 @@ const UpdatePlace = (props) => {
     }
 
     return (
-        <form className="place-form" onSubmit={placeUpdateSubmitHandler}>
-            <Input
-                id="title"
-                element="input"
-                type="text"
-                label="Title"
-                validators={[VALIDATOR_REQUIRE]}
-                errorText="Please enter a valid title."
-                onInput={inputHandler}
-                initialValue={formState.inputs.title.value}
-                initialValid={formState.inputs.title.isValid}
-            />
-            <Input
-                id="description"
-                element="textarea"
-                label="Description"
-                validators={[VALIDATOR_MINLENGTH(5)]}
-                errorText="Please enter a valid description (at least 5 characters)."
-                onInput={inputHandler}
-                initialValue={formState.inputs.description.value}
-                initialValid={formState.inputs.description.isValid}
-            />
-            <Button type="submit" disabled={!formState.isValid}>
-                Update Place
-            </Button>
-        </form>
+        <div className="img-grid">
+            <form className="place-form" onSubmit={placeUpdateSubmitHandler}>
+                <Input
+                    id="title"
+                    element="input"
+                    type="text"
+                    label="Title"
+                    validators={[VALIDATOR_REQUIRE]}
+                    errorText="Please enter a valid title."
+                    onInput={inputHandler}
+                    initialValue={formState.inputs.title.value}
+                    initialValid={formState.inputs.title.isValid}
+                />
+                <Input
+                    id="description"
+                    element="textarea"
+                    label="Description"
+                    validators={[VALIDATOR_MINLENGTH(5)]}
+                    errorText="Please enter a valid description (at least 5 characters)."
+                    onInput={inputHandler}
+                    initialValue={formState.inputs.description.value}
+                    initialValid={formState.inputs.description.isValid}
+                />
+                <Button type="submit" disabled={!formState.isValid}>
+                    Update Place
+                </Button>
+            </form>
+        </div>
     );
 };
 

@@ -62,7 +62,7 @@ const PlaceItem = (props) => {
                     that it can't be undone thereafter.
                 </p>
             </Modal>
-            <li className="place-item">
+            <div className="place-item">
                 <Card className="place-item__content">
                     <div className="place-item__image">
                         <img src={props.image} alt={props.title}></img>
@@ -86,7 +86,7 @@ const PlaceItem = (props) => {
                         )}
                     </div>
                 </Card>
-            </li>
+            </div>
         </React.Fragment>
     );
 };
