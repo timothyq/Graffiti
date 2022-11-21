@@ -11,7 +11,7 @@ const ImageGrid = ({ places }) => {
                     <PlaceItem
                         key={place}
                         id={place.id}
-                        image={place.url}
+                        image={place.image}
                         title={place.title}
                         description={place.description}
                         address={place.address}
