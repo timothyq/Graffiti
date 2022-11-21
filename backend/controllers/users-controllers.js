@@ -10,7 +10,6 @@ const getUsers = async (req, res, next) => {
         const User = req.app.locals.db.collection("users");
         result = await User.find().toArray();
     } catch (error) {
-        console.log(error);
         return next(
             new HttpError("Fetching users failed, please try again later!", 500)
         );
@@ -22,7 +21,6 @@ const signup = async (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-        console.log(errors);
         return next(new HttpError("Invalid input", 422));
     }
 
@@ -118,7 +116,6 @@ const login = async (req, res, next) => {
             { expiresIn: "24h" }
         );
     } catch (error) {
-        console.log(error);
         return next(
             new HttpError("Logging in failed, please try again later!", 500)
         );
