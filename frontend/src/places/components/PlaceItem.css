@@ -7,7 +7,7 @@
 }
 
 .place-item__info {
-    padding: 1rem;
+    padding: 0.5rem;
     text-align: center;
 }
 
@@ -26,7 +26,22 @@
 .place-item__info h2,
 .place-item__info h3,
 .place-item__info p {
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 0 0;
+}
+
+.place-item__info h2 {
+    color: #f44336;
+    font-family: 'Caveat', cursive;
+    font-size: 35px;
+}
+
+.place-item__info h3 {
+    font-size: 15px;
+}
+
+.place-item__info p {
+    font-size: 14px;
+    color: #9e9e9e;
 }
 
 .place-item__actions {
