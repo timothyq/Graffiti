@@ -11,14 +11,14 @@ const Map = (props) => {
             center: center,
             zoom: zoom,
         });
-
         new window.google.maps.Marker({ position: center, map: map });
     }, [center, zoom]);
 
+    
     return (
         <div
             ref={mapRef}
-            className={`map ${props.className}`}
+            className="map"
             style={props.style}
         ></div>
     );

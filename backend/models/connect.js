@@ -2,13 +2,12 @@
 //use an instance of MongoClient to connect to a cluster.
 //access the database in that cluster& close the connection to that cluster.
 const { MongoClient } = require("mongodb");
-const HttpError = require("./http-error");
+const dotenv = require("dotenv");
 
 // basic information about mongoDB
-const url = "mongodb+srv://root:DB123456@mern.vzfjptn.mongodb.net/wallet?retryWrites=true&w=majority";
-
-    // "mongodb+srv://lingyi:zly123456@cluster1.mkkgg71.mongodb.net/?retryWrites=true&w=majority;";
-const dbName = "Wallet";
+dotenv.config()
+const url = process.env.DB_URL;
+const dbName = process.env.DB_NAME;
 
 // connect to MongoDB accoring to provided database name
 async function connectDB() {

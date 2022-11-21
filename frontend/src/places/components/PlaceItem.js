@@ -1,14 +1,18 @@
 import React, { useContext, useState } from "react";
 import Button from "../../shared/components/FormElements/Button";
 import Card from "../../shared/components/UIElements/Card";
+import ErrorModal from "../../shared/components/UIElements/ErrorModal";
+import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import Map from "../../shared/components/UIElements/Map";
 import Modal from "../../shared/components/UIElements/Modal";
 import { AuthContext } from "../../shared/context/auth-context";
+import { useHttpClient } from "../../shared/hooks/hook-http";
 
 import "./PlaceItem.css";
-//define PlaceItem component
+
 const PlaceItem = (props) => {
     const auth = useContext(AuthContext);
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
     const [showMap, setShowMap] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -22,13 +26,24 @@ const PlaceItem = (props) => {
         setShowConfirmModal(false);
     };
 
-    const confirmDeleteHandler = () => {
+    const confirmDeleteHandler = async () => {
         setShowConfirmModal(false);
-        console.log("Deleting...");
+        try {
+            await sendRequest(
+                `${process.env.REACT_APP_BACKEND_URL}/places/${props.id}`,
+                "DELETE",
+                null,
+                {
+                    Authorization: "Bearer " + auth.token,
+                }
+            );
+            props.onDelete(props.id);
+        } catch (err) {}
     };
 
     return (
         <React.Fragment>
+            <ErrorModal error={error} onClear={clearError} />
             <Modal
                 show={showMap}
                 onCancel={closeMapHandler}
@@ -62,10 +77,14 @@ const PlaceItem = (props) => {
                     that it can't be undone thereafter.
                 </p>
             </Modal>
-            <div className="place-item">
+            <li className="place-item">
                 <Card className="place-item__content">
+                    {isLoading && <LoadingSpinner asOverlay />}
                     <div className="place-item__image">
-                        <img src={props.image} alt={props.title}></img>
+                        <img
+                            src={`${process.env.REACT_APP_ASSET_URL}/${props.image}`}
+                            alt={props.title}
+                        ></img>
                     </div>
                     <div className="place-item__info">
                         <h2>{props.title}</h2>
@@ -76,17 +95,17 @@ const PlaceItem = (props) => {
                         <Button inverse onClick={openMapHandler}>
                             View on Map
                         </Button>
-                        {auth.isLoggedIn && (
+                        {auth.userId === props.creatorId && (
                             <Button to={`/places/${props.id}`}>Edit</Button>
                         )}
-                        {auth.isLoggedIn && (
+                        {auth.userId === props.creatorId && (
                             <Button danger onClick={showDeleteWarningHandler}>
                                 Delete
                             </Button>
                         )}
                     </div>
                 </Card>
-            </div>
+            </li>
         </React.Fragment>
     );
 };

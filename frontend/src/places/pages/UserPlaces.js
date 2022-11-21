@@ -1,80 +1,52 @@
-import { React, useState, useEffect } from "react";
+import React, { useEffect, useState} from "react";
+import ErrorModal from "../../shared/components/UIElements/ErrorModal";
+import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
+import { useHttpClient } from "../../shared/hooks/hook-http";
+import PlaceList from "../components/PlaceList";
 import { useParams } from "react-router-dom";
 import Title from "../components/Title";
 import ImageGrid from "../components/ImageGrid";
 
-// const DUMMY_PLACES = [
-//     {
-//         id: "p1",
-//         title: "Two Embarcadera Center",
-//         description: "WeWork building!",
-//         url: "https://res.cloudinary.com/wework/image/upload/c_scale,w_800/v1/Defaults_DO_NOT_DELETE/Meeting/bookable-placeholder-05.jpg",
-//         address: "Two Embarcadero Center, San Francisco, CA 94111",
-//         location: {
-//             lat: 37.7947923,
-//             lng: -122.4005988,
-//         },
-//         creator: "u1",
-//     },
-//     {
-//         id: "p2",
-//         title: "One Embarcadera Center",
-//         description: "Shopping !",
-//         url: "https://res.cloudinary.com/wework/image/upload/c_scale,w_800/v1/Defaults_DO_NOT_DELETE/Meeting/bookable-placeholder-05.jpg",
-//         address: "One Embarcadero Center, San Francisco, CA 94111",
-//         location: {
-//             lat: 37.7947923,
-//             lng: -122.4005988,
-//         },
-//         creator: "u1",
-//     },
-//     {
-//         id: "p3",
-//         title: "Two Embarcadera Center",
-//         description: "WeWork building!",
-//         url: "https://res.cloudinary.com/wework/image/upload/c_scale,w_800/v1/Defaults_DO_NOT_DELETE/Meeting/bookable-placeholder-05.jpg",
-//         address: "Two Embarcadero Center, San Francisco, CA 94111",
-//         location: {
-//             lat: 37.7947923,
-//             lng: -122.4005988,
-//         },
-//         creator: "u1",
-//     },
-// ];
 
 const UserPlaces = () => {
+    const [loadedPlaces, setLoadedPlaces] = useState([]);
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
     const userId = useParams().userId;
-    //To send AJAX request in React(asks for uploaded images)
-    const [places, setPlaces] = useState([]);
+    
     useEffect(() => {
-        fetch("http://localhost:3000/users/places", {
-            method: "POST",
-            body: JSON.stringify({ email: userId }),
-            //headers tell backend that body is json style
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((res) => {
-                console.log(res);
-                return res.json();
-            })
-            .then(
-                (result) => {
-                    setPlaces(result.places);
-                },
-                (error) => {
-                    console.log("UserPlaces can not get images!");
-                    console.log(error);
-                }
-            );
-    }, [userId]);
+        
+        const fetchPlaces = async () => {
+            try {
+                const responseData = await sendRequest(
+                    `${process.env.REACT_APP_BACKEND_URL}/places/user/${userId}`
+                );
+                setLoadedPlaces(responseData.places);
+            } catch (err) {}
+        };
+        fetchPlaces();
+    }, [sendRequest, userId]);
+
+    const placeDeleteHandler = (deletedPlace) => {
+        setLoadedPlaces((prePlaces) =>
+            prePlaces.filter((place) => place.id !== deletedPlace)
+        );
+    };
 
     return (
-        <div>
-            <Title />
-            <ImageGrid places={places} />
-        </div>
+        <React.Fragment>
+            <ErrorModal error={error} onClear={clearError} />
+            {isLoading && (
+                <div className="center">
+                    <LoadingSpinner />
+                </div>
+            )}
+            {!isLoading && loadedPlaces && (
+                <PlaceList
+                    items={loadedPlaces}
+                    onDeletePlace={placeDeleteHandler}
+                />
+            )}
+        </React.Fragment>
     );
 };
 
