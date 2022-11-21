@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import { useHttpClient } from "../../shared/hooks/hook-http";
@@ -6,14 +6,12 @@ import PlaceList from "../components/PlaceList";
 import { useParams } from "react-router-dom";
 import Title from "../components/Title";
 
-
 const UserPlaces = () => {
     const [loadedPlaces, setLoadedPlaces] = useState([]);
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
     const userId = useParams().userId;
-    
+
     useEffect(() => {
-        
         const fetchPlaces = async () => {
             try {
                 const responseData = await sendRequest(
@@ -27,7 +25,7 @@ const UserPlaces = () => {
 
     const placeDeleteHandler = (deletedPlace) => {
         setLoadedPlaces((prePlaces) =>
-            prePlaces.filter((place) => place.id !== deletedPlace)
+            prePlaces.filter((place) => place._id !== deletedPlace)
         );
     };
 

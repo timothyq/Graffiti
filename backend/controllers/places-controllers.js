@@ -1,6 +1,5 @@
 const { v4: uuid } = require("uuid");
 const { validationResult } = require("express-validator");
-
 const HttpError = require("../models/http-error");
 const getCoordsForAddress = require("../util/location");
 const fs = require("fs");
@@ -13,7 +12,6 @@ const getPlaceById = async (req, res, next) => {
         const Place = req.app.locals.db.collection("places");
         existingPlace = await Place.findOne({ _id: placeId });
     } catch (error) {
-        console.log(error.message);
         return next(
             new HttpError("Something went wrong, could not find place!", 500)
         );
@@ -24,24 +22,15 @@ const getPlaceById = async (req, res, next) => {
             new HttpError("Conld not find a place for the provided id.", 404)
         );
     }
-
-    if (existingPlace.creator !== req.userData.userId) {
-        return next(new HttpError("Unauthorized.", 403));
-    }
-
-    res.status(200).json({ expense: existingPlace });
+    res.status(200).json({ place: existingPlace });
 };
 
 const getPlacesByUserId = async (req, res, next) => {
     const userId = req.params.uid;
 
-    if (userId !== req.userData.userId) {
-        return next(new HttpError("Unauthorized.", 403));
-    }
-
     try {
         const Place = req.app.locals.db.collection("places");
-        const existingPlaces = await Expense.find({
+        const existingPlaces = await Place.find({
             creator: userId,
         }).toArray();
         if (!existingPlaces) {
@@ -70,15 +59,11 @@ const createPlace = async (req, res, next) => {
     }
     const { title, description, address } = req.body;
 
-    if (creator !== req.userData.userId) {
-        return next(new HttpError("Unauthorized.", 403));
-
-        let coordinates;
-        try {
-            coordinates = await getCoordsForAddress(address);
-        } catch (error) {
-            return next(error);
-        }
+    let coordinates;
+    try {
+        coordinates = await getCoordsForAddress(address);
+    } catch (error) {
+        return next(error);
     }
 
     const createdPlace = {
@@ -94,17 +79,29 @@ const createPlace = async (req, res, next) => {
     try {
         const User = req.app.locals.db.collection("users");
         const Place = req.app.locals.db.collection("places");
-        const existingUser = await User.findOne({ _id: creator });
+        const existingUser = await User.findOne({ _id: req.userData.userId });
 
         if (!existingUser) {
             return next(
                 new HttpError("Could not find user for provided id", 500)
             );
         }
+        let places = existingUser.places;
+        places.push(createdPlace._id);
+        const updatedUser = {
+            _id: existingUser._id,
+            name: existingUser.name,
+            email: existingUser.email,
+            image: existingUser.image,
+            password: existingUser.password,
+            places,
+        };
 
-        await Place.insertOne(createPlace);
-        res.status(201).json({ place: createPlace });
+        await Place.insertOne(createdPlace);
+        await User.replaceOne({ _id: req.userData.userId }, updatedUser);
+        res.status(201).json({ place: createdPlace });
     } catch (error) {
+        console.log(error.message);
         return next(
             new HttpError("Creating place failed, please try again", 500)
         );
@@ -120,76 +117,87 @@ const updatePlace = async (req, res, next) => {
     const { title, description } = req.body;
     const placeId = req.params.pid;
 
-    let place;
     try {
-        place = await Place.findById(placeId);
+        const Place = req.app.locals.db.collection("places");
+        const existingPlace = await Place.findOne({ _id: placeId });
+        if (!existingPlace) {
+            return next(
+                new HttpError("Conld not find place for the provided id.", 404)
+            );
+        }
+
+        if (existingPlace.creator.toString() !== req.userData.userId) {
+            return next(new HttpError("Unauthorized.", 403));
+        }
+
+        const updatedPlace = {
+            _id: placeId,
+            title,
+            description,
+            address: existingPlace.address,
+            location: existingPlace.location,
+            image: existingPlace.image,
+            creator: existingPlace.creator,
+        };
+
+        await Place.replaceOne({ _id: placeId }, updatedPlace);
+        res.status(200).json({
+            place: updatedPlace,
+        });
     } catch (error) {
+        console.log(error.message);
         return next(
             new HttpError("Something went wrong, could not update place!", 500)
         );
     }
-
-    if (place.creator.toString() !== req.userData.userId) {
-        return next(
-            new HttpError("You are not allowed to edit this place!", 401)
-        );
-    }
-
-    place.title = title;
-    place.description = description;
-
-    try {
-        await place.save();
-    } catch (error) {
-        return next(
-            new HttpError("Something went wrong, could not update place!", 500)
-        );
-    }
-
-    res.status(200).json({ place: place.toObject({ getters: true }) });
 };
 
 const deletePlace = async (req, res, next) => {
     const placeId = req.params.pid;
 
-    let place;
     try {
-        place = await Place.findById(placeId).populate("creator");
-    } catch (error) {
-        return next(
-            new HttpError(
-                "Something went wrong, could not delete place! Since could not find the creator for provided id",
-                500
-            )
-        );
-    }
+        const Place = req.app.locals.db.collection("places");
+        const User = req.app.locals.db.collection("users");
+        const existingPlace = await Place.findOne({ _id: placeId });
+        const existingUser = await User.findOne({ _id: req.userData.userId });
 
-    if (!place) {
-        return next(new HttpError("Could not find place for this id"), 404);
-    }
+        if (!existingPlace) {
+            return next(new HttpError("Could not find place for this id"), 204);
+        }
 
-    if (place.creator.id !== req.userData.userId) {
-        return next(
-            new HttpError("You are not allowed to delete this place!", 401)
-        );
-    }
+        if (existingPlace.creator !== req.userData.userId) {
+            return next(new HttpError("Unauthorized.", 403));
+        }
 
-    try {
-        const sess = await mongoose.startSession();
-        sess.startTransaction();
-        await place.remove({ session: sess });
-        place.creator.places.pull(place);
-        await place.creator.save({ session: sess });
-        await sess.commitTransaction();
+        await Place.deleteOne({ _id: placeId });
+
+        let places = existingUser.places;
+        const index = places.indexOf(placeId);
+        if (index > -1) { 
+            places.splice(index, 1);
+          }
+
+        const updatedUser = {
+            _id: existingUser._id,
+            name: existingUser.name,
+            email: existingUser.email,
+            image: existingUser.image,
+            password: existingUser.password,
+            places,
+        };
+
+        await User.replaceOne({ _id: req.userData.userId }, updatedUser);
+
+        fs.unlink(existingPlace.image, (err) => {
+            console.log(err);
+        });
+
+        res.status(200).json({ message: "Success!" });
     } catch (error) {
         return next(
             new HttpError("Somethin went wrong, could not delete place!", 500)
         );
     }
-    fs.unlink(place.image, (err) => {
-        console.log(err);
-    });
-    res.status(200).json({ message: "Success!" });
 };
 
 exports.getPlaceById = getPlaceById;

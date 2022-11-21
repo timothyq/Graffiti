@@ -76,7 +76,7 @@ const login = async (req, res, next) => {
     // check existing user with the provided email
     let existingUser;
     try {
-        const User = req.app.locals.database.collection("users");
+        const User = req.app.locals.db.collection("users");
         existingUser = await User.findOne({ email: email });
         if (!existingUser) {
             return next(
@@ -139,11 +139,10 @@ const getPlaces = async (req, res, next) => {
     try {
         //req.body is a object
         const { email } = req.body;
-        const PlaceImage = req.app.locals.database.collection("places");
+        const PlaceImage = req.app.locals.db.collection("places");
         result = await PlaceImage.find({ creator: email }).toArray();
         res.status(200).json({ places: result });
     } catch (error) {
-        console.log(error);
         return next(
             new HttpError(
                 "Fetching places failed, please try again later!",

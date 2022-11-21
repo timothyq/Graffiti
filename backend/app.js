@@ -45,11 +45,10 @@ app.use((error, req, res, next) => {
 });
 
 connectDB()
-  .then((db) => {
-    //we add database in locals with value of db
-    app.locals.database = db;
-    app.listen(3000);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+    .then((db) => {
+        app.locals.db = db;
+        app.listen(3000);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
