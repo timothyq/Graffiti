@@ -1,15 +1,16 @@
-const { v4: uuid } = require("uuid");
-const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { v4: uuid } = require("uuid");
+const { validationResult } = require("express-validator");
 const HttpError = require("../models/http-error");
 
 const getUsers = async (req, res, next) => {
     let result;
     try {
-        const User = req.app.locals.database.collection("users");
+        const User = req.app.locals.db.collection("users");
         result = await User.find().toArray();
     } catch (error) {
+        console.log(error);
         return next(
             new HttpError("Fetching users failed, please try again later!", 500)
         );
@@ -28,7 +29,7 @@ const signup = async (req, res, next) => {
     const { name, email, password } = req.body;
 
     try {
-        const User = req.app.locals.database.collection("users");
+        const User = req.app.locals.db.collection("users");
         const existingUser = await User.findOne({ email: email });
 
         if (existingUser) {
@@ -46,7 +47,7 @@ const signup = async (req, res, next) => {
             email,
             image: req.file.path,
             password: hashedPassword,
-            palces: [],
+            places: [],
         };
 
         await User.insertOne(newUser);

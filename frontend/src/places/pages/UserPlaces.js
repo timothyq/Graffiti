@@ -5,7 +5,6 @@ import { useHttpClient } from "../../shared/hooks/hook-http";
 import PlaceList from "../components/PlaceList";
 import { useParams } from "react-router-dom";
 import Title from "../components/Title";
-import ImageGrid from "../components/ImageGrid";
 
 
 const UserPlaces = () => {
@@ -40,6 +39,7 @@ const UserPlaces = () => {
                     <LoadingSpinner />
                 </div>
             )}
+            <Title></Title>
             {!isLoading && loadedPlaces && (
                 <PlaceList
                     items={loadedPlaces}

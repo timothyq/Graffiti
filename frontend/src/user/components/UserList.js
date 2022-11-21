@@ -14,6 +14,7 @@ const UserList = (props) => {
         );
     }
 
+    console.log(props.items)
     return (
         <ul className="users-list">
             {props.items.map((user) => {

@@ -1,60 +1,65 @@
-// const { v4: uuid } = require("uuid");
+const { v4: uuid } = require("uuid");
 const { validationResult } = require("express-validator");
 
 const HttpError = require("../models/http-error");
 const getCoordsForAddress = require("../util/location");
-const Place = require("../models/place");
-const User = require("../models/user");
-const mongoose = require("mongoose");
 const fs = require("fs");
 
 const getPlaceById = async (req, res, next) => {
     const placeId = req.params.pid;
 
-    let place;
+    let existingPlace;
     try {
-        place = await Place.findById(placeId);
+        const Place = req.app.locals.db.collection("places");
+        existingPlace = await Place.findOne({ _id: placeId });
     } catch (error) {
         console.log(error.message);
-        const err = new HttpError(
-            "Something went wrong, could not find place!",
-            500
+        return next(
+            new HttpError("Something went wrong, could not find place!", 500)
         );
-        return next(err);
     }
 
-    if (!place) {
+    if (!existingPlace) {
         return next(
             new HttpError("Conld not find a place for the provided id.", 404)
         );
     }
-    res.json({ place: place.toObject({ getters: true }) });
+
+    if (existingPlace.creator !== req.userData.userId) {
+        return next(new HttpError("Unauthorized.", 403));
+    }
+
+    res.status(200).json({ expense: existingPlace });
 };
 
 const getPlacesByUserId = async (req, res, next) => {
     const userId = req.params.uid;
 
-    let places;
+    if (userId !== req.userData.userId) {
+        return next(new HttpError("Unauthorized.", 403));
+    }
+
     try {
-        places = await Place.find({ creator: userId });
+        const Place = req.app.locals.db.collection("places");
+        const existingPlaces = await Expense.find({
+            creator: userId,
+        }).toArray();
+        if (!existingPlaces) {
+            return next(
+                new HttpError(
+                    "Conld not find places for the provided user id.",
+                    500
+                )
+            );
+        }
+        res.status(200).json({
+            places: existingPlaces,
+        });
     } catch (error) {
-        console.log(error.message);
         return next(
             new HttpError("Fetching places failed, please try again later", 500)
         );
     }
-
-    if (!places) {
-        return next(
-            new HttpError(
-                "Could not find places for the provided user id.",
-                404
-            )
-        );
-    }
-    res.json({
-        places: places.map((place) => place.toObject({ getters: true })),
-    });
 };
 
 const createPlace = async (req, res, next) => {
@@ -65,49 +70,45 @@ const createPlace = async (req, res, next) => {
     }
     const { title, description, address } = req.body;
 
-    let coordinates;
-    try {
-        coordinates = await getCoordsForAddress(address);
-    } catch (error) {
-        return next(error);
+    if (creator !== req.userData.userId) {
+        return next(new HttpError("Unauthorized.", 403));
+
+        let coordinates;
+        try {
+            coordinates = await getCoordsForAddress(address);
+        } catch (error) {
+            return next(error);
+        }
     }
 
-    const createdPlace = new Place({
+    const createdPlace = {
+        _id: uuid(),
         title,
         description,
         address,
         location: coordinates,
         image: req.file.path,
         creator: req.userData.userId,
-    });
+    };
 
-    let user;
     try {
-        user = await User.findById(req.userData.userId);
+        const User = req.app.locals.db.collection("users");
+        const Place = req.app.locals.db.collection("places");
+        const existingUser = await User.findOne({ _id: creator });
+
+        if (!existingUser) {
+            return next(
+                new HttpError("Could not find user for provided id", 500)
+            );
+        }
+
+        await Place.insertOne(createPlace);
+        res.status(201).json({ place: createPlace });
     } catch (error) {
         return next(
             new HttpError("Creating place failed, please try again", 500)
         );
     }
-
-    if (!user) {
-        return next(new HttpError("Could not find user for provided id", 404));
-    }
-
-    try {
-        const sess = await mongoose.startSession();
-        sess.startTransaction();
-        await createdPlace.save({ session: sess });
-        user.places.push(createdPlace);
-        await user.save({ session: sess });
-        sess.commitTransaction();
-    } catch (error) {
-        return next(
-            new HttpError("Creating place failed, please try again.", 500)
-        );
-    }
-
-    res.status(201).json({ place: createdPlace });
 };
 
 const updatePlace = async (req, res, next) => {
