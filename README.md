@@ -10,7 +10,7 @@ Users can post new graffiti with location and detailed description. Finished by 
 
 Users can update and delete information on one graffiti post. Finished by Hui
 
-Users can browse all the graffiti posts other users uploaded. Finished by Hui
+Users can browse all the graffiti posts other users uploaded. Finished by Lingyi
 
 Users can browse all the graffiti posts they uploaded. Finished by Lingyi
 
