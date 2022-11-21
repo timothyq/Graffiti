@@ -96,12 +96,15 @@ const PlaceItem = (props) => {
                             View on Map
                         </Button>
                         {auth.userId === props.creatorId && (
-                            <Button to={`/places/${props.id}`}>Edit</Button>
-                        )}
-                        {auth.userId === props.creatorId && (
-                            <Button danger onClick={showDeleteWarningHandler}>
-                                Delete
-                            </Button>
+                            <div>
+                                <Button to={`/places/${props.id}`}>Edit</Button>
+                                <Button
+                                    danger
+                                    onClick={showDeleteWarningHandler}
+                                >
+                                    Delete
+                                </Button>
+                            </div>
                         )}
                     </div>
                 </Card>
