@@ -20,6 +20,9 @@ San Francisco is a colourful city, besides doing all the touristy things, there 
 
 Graffiti is time-sensitive, sometimes we find a great graffiti on our way home, but when we come back a few days later, it’s gone or replaced by other graffiti, we want to keep these social memory forever and let others to explore their meanings and implications.
 
+**Presentation:**
+<img width="1487" alt="screenshoot" src="https://user-images.githubusercontent.com/99467950/203214862-27df4a6f-d22c-499d-b0c9-69a77cb022ba.png">
+<img width="1488" alt="Screen Shot 2022-11-21 at 7 35 30 PM" src="https://user-images.githubusercontent.com/99467950/203215115-53fe9c0b-1023-4595-8fc7-03167561a624.png">
 
 # How to start
 ## Frontend
