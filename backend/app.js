@@ -11,6 +11,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
+//Code Review: Some Pics lost in the demo. Images may be stored in the database, expecially when there're related to a specific user or contents.
 app.use("/uploads/images", express.static(path.join("uploads", "images")));
 
 app.use((req, res, next) => {
