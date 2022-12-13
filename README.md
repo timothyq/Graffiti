@@ -27,10 +27,16 @@ Graffiti is time-sensitive, sometimes we find a great graffiti on our way home, 
 **Improvements on Usability and Acessbility:**
 - Because it is a street art website with dark based Background picture, the button and words color we use is kind of bright but not messy.
 - Change Authenticate to Sign in, change gariffti to Street Art, and change all font to be consistent for improving accessbility.
+- Upload images to AWS rather than local directory
+- Change the order of inputs when registering
 - Improve user accessibility using AXE DevTools.
+
 **Presentation:**
-<img width="1487" alt="screenshoot" src="https://user-images.githubusercontent.com/99467950/203214862-27df4a6f-d22c-499d-b0c9-69a77cb022ba.png">
-<img width="1488" alt="Screen Shot 2022-11-21 at 7 35 30 PM" src="https://user-images.githubusercontent.com/99467950/203215115-53fe9c0b-1023-4595-8fc7-03167561a624.png">
+<img width="1493" alt="2" src="https://user-images.githubusercontent.com/99467950/207404079-f3f240ff-01f7-42c4-b631-0b1a8786b124.png">
+<img width="1496" alt="1" src="https://user-images.githubusercontent.com/99467950/207404091-322a529a-53c6-4613-a5d7-0c705396edb9.png">
+<img width="1496" alt="3" src="https://user-images.githubusercontent.com/99467950/207404101-6b5f524c-6e43-4a79-a08e-1955d8bd3239.png">
+<img width="1496" alt="4" src="https://user-images.githubusercontent.com/99467950/207404107-94bef878-9bfb-4e82-90b8-193413947811.png">
+
 
 # How to start
 ## Frontend
