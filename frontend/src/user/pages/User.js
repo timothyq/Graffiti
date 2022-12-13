@@ -10,9 +10,11 @@ const Users = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
+                console.log(process.env.REACT_APP_BACKEND_URL);
                 const responseData = await sendRequest(
                     process.env.REACT_APP_BACKEND_URL + "/users"
                 );
+                console.log(responseData);
                 setLoadedUser(responseData.users);
             } catch (err) {
                 console.log(err.message);

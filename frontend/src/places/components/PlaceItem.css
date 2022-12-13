@@ -30,8 +30,9 @@
 }
 
 .place-item__info h2 {
-    color: #f44336;
-    font-family: 'Caveat', cursive;
+    color: #6d9886;
+    /* font-family: "Caveat", cursive; */
+    font-family: "Trirong", serif;
     font-size: 35px;
 }
 
@@ -67,7 +68,6 @@
     height: 20rem;
     width: 100%;
 }
-
 
 @media (min-width: 768px) {
     .place-item__image {

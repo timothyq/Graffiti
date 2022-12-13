@@ -39,7 +39,7 @@ const MainNavigation = (props) => {
                     <span />
                 </button>
                 <h1 className="main-navigation__title">
-                    <Link to="/">Graffiti</Link>
+                    <Link to="/">STREET ART</Link>
                 </h1>
                 <nav className="main-navigation__header-nav">
                     <NavLinks />
