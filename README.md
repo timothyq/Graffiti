@@ -15,6 +15,7 @@ https://docs.google.com/document/d/1fu_c14aooiONTpzTearL_x1zHS6A7ZTPNsRqEETlVZc/
 https://docs.google.com/presentation/d/1Ccm_lmKUowN4UyYkC_vvDcKdGrlzil_5XGhPvD-9OCo/edit?usp=sharing
 
 **Presentation:**
+https://youtu.be/sgDr3UghX8Q
 
 
 **Objective:** A single-page web application for users to share and find graffiti in San Francisco streets. Users can post new graffiti they found in some unnoticeable conners with detailed information and description about these graffiti, or they can just browser our website to see all graffiti created by unknown artists but they ignored.  
