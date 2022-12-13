@@ -3,6 +3,7 @@ const { validationResult } = require("express-validator");
 const HttpError = require("../models/http-error");
 const getCoordsForAddress = require("../util/location");
 const fs = require("fs");
+const uploadImg = require("../util/uploadImg");
 
 const getPlaceById = async (req, res, next) => {
     const placeId = req.params.pid;
@@ -65,13 +66,14 @@ const createPlace = async (req, res, next) => {
         return next(error);
     }
 
+    const url = await uploadImg(req.file.path);
     const createdPlace = {
         _id: uuid(),
         title,
         description,
         address,
         location: coordinates,
-        image: req.file.path,
+        image: url,
         creator: req.userData.userId,
     };
 
@@ -171,9 +173,9 @@ const deletePlace = async (req, res, next) => {
 
         let places = existingUser.places;
         const index = places.indexOf(placeId);
-        if (index > -1) { 
+        if (index > -1) {
             places.splice(index, 1);
-          }
+        }
 
         const updatedUser = {
             _id: existingUser._id,

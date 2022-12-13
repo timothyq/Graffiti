@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const { v4: uuid } = require("uuid");
 const { validationResult } = require("express-validator");
 const HttpError = require("../models/http-error");
+const uploadImg = require("../util/uploadImg");
 
 const getUsers = async (req, res, next) => {
     let result;
@@ -39,11 +40,13 @@ const signup = async (req, res, next) => {
 
         const hashedPassword = await bcrypt.hash(password, 12);
 
+        const url = await uploadImg(req.file.path);
+
         const newUser = {
             _id: uuid(),
             name,
             email,
-            image: req.file.path,
+            image: url,
             password: hashedPassword,
             places: [],
         };
