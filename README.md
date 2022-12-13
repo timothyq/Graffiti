@@ -26,8 +26,10 @@ Graffiti is time-sensitive, sometimes we find a great graffiti on our way home, 
 
 **Project 3 Deployment Link:**
 https://street-art2022.web.app/
+
 **Project 4 Deployment Link:**
 https://streetart20221.web.app
+
 **Improvements on Usability and Acessbility:**
 - Because it is a street art website with dark based Background picture, the button and words color we use is kind of bright but not messy.
 - Change Authenticate to Sign in, change gariffti to Street Art, and change all font to be consistent for improving accessbility.
