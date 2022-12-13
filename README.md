@@ -1,6 +1,22 @@
 # WE WANT THE BONUS POINTS
 # Street Art -- Graffiti
 
+
+**Project 3 Deployment Link:**
+https://street-art2022.web.app/
+
+**Project 4 Deployment Link:**
+https://streetart20221.web.app
+
+**Usability Report:**
+https://docs.google.com/document/d/1fu_c14aooiONTpzTearL_x1zHS6A7ZTPNsRqEETlVZc/edit?usp=sharing
+
+**Slide:**
+https://docs.google.com/presentation/d/1Ccm_lmKUowN4UyYkC_vvDcKdGrlzil_5XGhPvD-9OCo/edit?usp=sharing
+
+**Presentation:**
+
+
 **Objective:** A single-page web application for users to share and find graffiti in San Francisco streets. Users can post new graffiti they found in some unnoticeable conners with detailed information and description about these graffiti, or they can just browser our website to see all graffiti created by unknown artists but they ignored.  
 
 **Functionalities:** 
@@ -23,12 +39,6 @@ Graffiti is time-sensitive, sometimes we find a great graffiti on our way home, 
 
 **Color Palette:**
 <img width="1442" alt="Screen Shot 2022-12-13 at 9 22 31 AM" src="https://user-images.githubusercontent.com/99467950/207402282-de62ec96-539f-49e3-a464-0f64eb45c3c6.png">
-
-**Project 3 Deployment Link:**
-https://street-art2022.web.app/
-
-**Project 4 Deployment Link:**
-https://streetart20221.web.app
 
 **Improvements on Usability and Acessbility:**
 - Because it is a street art website with dark based Background picture, the button and words color we use is kind of bright but not messy.
