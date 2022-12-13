@@ -33,6 +33,7 @@ const MainNavigation = (props) => {
                 <button
                     className="main-navigation__menu-btn"
                     onClick={openDrawerHeadler}
+                    aria-label="Navigation Menu Button"
                 >
                     <span />
                     <span />
