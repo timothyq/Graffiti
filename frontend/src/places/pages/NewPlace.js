@@ -82,6 +82,7 @@ const NewPlace = () => {
                     errorText="Please enter a valid description (at least 5 characters)."
                     onInput={inputHandler}
                 />
+                // Recommend to add an actual place selector instead of having a validation after submition.
                 <Input
                     id="address"
                     element="input"
