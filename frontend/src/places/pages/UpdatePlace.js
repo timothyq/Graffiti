@@ -126,7 +126,8 @@ const UpdatePlace = (props) => {
                         onInput={inputHandler}
                         initialValue={loadedPlace.description}
                         initialValid={true}
-                    />
+                    />                            
+                    // Recommend to add features that enables to change the map information as well
                     <Button type="submit" disabled={!formState.isValid}>
                         Update Place
                     </Button>
