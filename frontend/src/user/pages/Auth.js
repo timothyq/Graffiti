@@ -17,7 +17,7 @@ import ImageUpload from "../../shared/components/FormElements/ImageUpload";
 
 import "./Auth.css";
 
-
+// Make this page into login and register
 const Auth = () => {
     const auth = useContext(AuthContext);
     const [isLoginMode, setIsLoginMode] = useState(true);
