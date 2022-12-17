@@ -12,6 +12,7 @@ const PlaceList = (props) => {
                 <div></div>
                 <Card>
                     <h2>No places found. </h2>
+            // Not show this on others' pages, will be a little confusing.
                     <Button to="/places/new">Share Place</Button>
                 </Card>
             </div>
